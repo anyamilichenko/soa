@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: soa_service_a
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: Anna2109
+    driver-class-name: org.postgresql.Driver
+
+  liquibase:
+    enabled: false
+
+  main:
+    web-application-type: servlet
+

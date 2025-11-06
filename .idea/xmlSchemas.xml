@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+    <component name="XmlSchemaMappings">
+        <xmlSchemaMapping
+                uri="http://www.jooq.org/xsd/jooq-codegen-3.19.0.xsd"
+                location="$PROJECT_DIR$/.idea/schemas/jooq-codegen-3.19.0.xsd"
+                isDefault="false" />
+    </component>
+</project>
