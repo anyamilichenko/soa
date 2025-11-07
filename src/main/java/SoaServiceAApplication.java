@@ -1,8 +1,17 @@
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.SpringApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 
-@SpringBootApplication(scanBasePackages = "com.soa_service_a")
+@SpringBootApplication
+@ComponentScan(basePackages = {
+        "com.soa_service_a",
+        "dragon",
+        "dragonHead",
+        "coordinates",
+        "mapstruct"
+})
+
 public class SoaServiceAApplication {
 
     public static void main(String[] args) {
