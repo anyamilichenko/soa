@@ -4,14 +4,14 @@ import java.time.OffsetDateTime;
 
 public class Dragon {
     private Long id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
-    private String name; //Поле не может быть null, Строка не может быть пустой
-    private Long coordinatesId; //Поле не может быть null
-    private OffsetDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
-    private int age; //Значение поля должно быть больше 0
-    private String description; //Поле может быть null
-    private Color color; //Поле не может быть null
-    private DragonType type; //Поле может быть null
-    private Long headId;
+    private final String name; //Поле не может быть null, Строка не может быть пустой
+    private final Long coordinatesId; //Поле не может быть null
+    private final OffsetDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
+    private final int age; //Значение поля должно быть больше 0
+    private final String description; //Поле может быть null
+    private final Color color; //Поле не может быть null
+    private final DragonType type; //Поле может быть null
+    private final Long headId;
 
 
     public Dragon(Long id, String name, Long coordinatesId, OffsetDateTime creationDate,
