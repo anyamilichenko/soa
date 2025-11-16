@@ -1,11 +1,15 @@
 package dragonHead.adapter.jdbc;
 
+import com.soa_service_a.jooq.tables.records.CoordinatesRecord;
+import coordinates.domain.Coordinates;
 import dragonHead.domain.DragonHead;
 import mapstruct.DragonHeadMapper;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 
 import static com.soa_service_a.jooq.Tables.DRAGON_HEAD;
+import static com.soa_service_a.jooq.tables.Coordinates.COORDINATES;
+
 import com.soa_service_a.jooq.tables.records.DragonHeadRecord;
 
 @Repository

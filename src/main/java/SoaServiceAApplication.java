@@ -9,7 +9,10 @@ import org.springframework.context.annotation.ComponentScan;
         "dragon",
         "dragonHead",
         "coordinates",
-        "mapstruct"
+        "mapstruct",
+        "utils",
+        "errorhandling",
+        "configuration"
 })
 
 public class SoaServiceAApplication {

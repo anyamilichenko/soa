@@ -44,20 +44,20 @@ public class DragonService {
 
     @Transactional
     public DragonResponseDTO createDragon(DragonRequestDTO dto) {
-        DragonHead dragonHead = null;
-        if (dto.getHead() != null) {
-            dragonHead = dragonHeadService.createDragonHead(dto.getHead());
-        }
 
+        DragonHead dragonHead = dragonHeadService.createDragonHead(dto.getHead());
         Coordinates coordinates = coordinatesService.createCoordinates(dto.getCoordinates());
 
-        Dragon dragon;
-        if (coordinates.getId() != null) {
-            Dragon dr = dragonMapper.fromRequest(dto, coordinates.getId(), dragonHead != null ? dragonHead.getId() : null);
-            dragon = dragonDAO.insert(dr);
-        } else {
+        Long headId = dragonHead.getId();
+        if (headId == null) {
             throw new DragonCreateException();
         }
+
+        Long coordinatesId = coordinates.getId();
+        if (coordinatesId == null) {
+            throw new DragonCreateException();
+        }
+        Dragon dragon = dragonDAO.insert(dragonMapper.fromRequest(dto, coordinatesId, headId));
 
         if (dragon == null) {
             throw new DragonCreateException();
@@ -101,8 +101,9 @@ public class DragonService {
                 existing.getHeadId()
         );
 
-        Dragon updatedOrganization = dragonDAO.updateById(toUpdate);
-        if (updatedOrganization == null) {
+        toUpdate.setId(id);
+        Dragon updatedDragon = dragonDAO.updateById(toUpdate);
+        if (updatedDragon == null) {
             throw new NoDragonFoundException(id);
         }
 
@@ -117,7 +118,7 @@ public class DragonService {
         );
 
         return dragonMapper.toResponse(
-                updatedOrganization,
+                updatedDragon,
                 coordinatesMapper.toDTO(updatedCoordinates),
                 updatedDragonHead != null ? dragonHeadMapper.toDTO(updatedDragonHead) : null
         );

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-11-06T21:37:52+0300",
+    date = "2025-11-16T18:11:15+0300",
     comments = "version: 1.6.3, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.14.3.jar, environment: Java 21.0.9 (Oracle Corporation)"
 )
 @Component
@@ -105,8 +105,8 @@ public class DragonMapperImpl implements DragonMapper {
     }
 
     @Override
-    public Dragon fromRequest(DragonRequestDTO request, Long coordinatesId, Long HeadId) {
-        if ( request == null && coordinatesId == null && HeadId == null ) {
+    public Dragon fromRequest(DragonRequestDTO request, Long coordinatesId, Long headId) {
+        if ( request == null && coordinatesId == null && headId == null ) {
             return null;
         }
 
@@ -134,12 +134,15 @@ public class DragonMapperImpl implements DragonMapper {
         if ( coordinatesId != null ) {
             coordinatesId1 = coordinatesId;
         }
+        Long headId1 = null;
+        if ( headId != null ) {
+            headId1 = headId;
+        }
 
         Long id = null;
         OffsetDateTime creationDate = null;
-        Long headId = null;
 
-        Dragon dragon = new Dragon( id, name, coordinatesId1, creationDate, age, description, color, type, headId );
+        Dragon dragon = new Dragon( id, name, coordinatesId1, creationDate, age, description, color, type, headId1 );
 
         return dragon;
     }
@@ -151,6 +154,34 @@ public class DragonMapperImpl implements DragonMapper {
         }
 
         DragonResponseDTO dragonResponseDTO = new DragonResponseDTO();
+
+        if ( domain != null ) {
+            if ( domain.getId() != null ) {
+                dragonResponseDTO.setId( domain.getId() );
+            }
+            if ( domain.getName() != null ) {
+                dragonResponseDTO.setName( domain.getName() );
+            }
+            if ( domain.getCreationDate() != null ) {
+                dragonResponseDTO.setCreationDate( domain.getCreationDate() );
+            }
+            dragonResponseDTO.setAge( domain.getAge() );
+            if ( domain.getDescription() != null ) {
+                dragonResponseDTO.setDescription( domain.getDescription() );
+            }
+            if ( domain.getColor() != null ) {
+                dragonResponseDTO.setColor( domain.getColor() );
+            }
+            if ( domain.getType() != null ) {
+                dragonResponseDTO.setType( domain.getType() );
+            }
+        }
+        if ( coordinates != null ) {
+            dragonResponseDTO.setCoordinates( coordinates );
+        }
+        if ( head != null ) {
+            dragonResponseDTO.setHead( head );
+        }
 
         return dragonResponseDTO;
     }

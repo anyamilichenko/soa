@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-11-06T21:37:52+0300",
+    date = "2025-11-16T17:41:20+0300",
     comments = "version: 1.6.3, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.14.3.jar, environment: Java 21.0.9 (Oracle Corporation)"
 )
 @Component
@@ -25,6 +25,9 @@ public class DragonHeadMapperImpl implements DragonHeadMapper {
         if ( domain.getId() != null ) {
             dragonHeadRecord.setId( domain.getId() );
         }
+        if ( domain.getEyesCount() != null ) {
+            dragonHeadRecord.setEyesCount( domain.getEyesCount() );
+        }
 
         return dragonHeadRecord;
     }
@@ -36,13 +39,13 @@ public class DragonHeadMapperImpl implements DragonHeadMapper {
         }
 
         Long id = null;
-        Float eyesCount = null;
+        Integer eyesCount = null;
 
         if ( record.getId() != null ) {
             id = record.getId();
         }
         if ( record.getEyesCount() != null ) {
-            eyesCount = record.getEyesCount().floatValue();
+            eyesCount = record.getEyesCount();
         }
 
         DragonHead dragonHead = new DragonHead( id, eyesCount );
@@ -56,9 +59,11 @@ public class DragonHeadMapperImpl implements DragonHeadMapper {
             return null;
         }
 
-        Float eyesCount = null;
+        DragonHeadDTO dragonHeadDTO = new DragonHeadDTO();
 
-        DragonHeadDTO dragonHeadDTO = new DragonHeadDTO( eyesCount );
+        if ( domain.getEyesCount() != null ) {
+            dragonHeadDTO.setEyesCount( domain.getEyesCount() );
+        }
 
         return dragonHeadDTO;
     }
@@ -69,7 +74,7 @@ public class DragonHeadMapperImpl implements DragonHeadMapper {
             return null;
         }
 
-        Float eyesCount = null;
+        Integer eyesCount = null;
 
         if ( dto.getEyesCount() != null ) {
             eyesCount = dto.getEyesCount();
