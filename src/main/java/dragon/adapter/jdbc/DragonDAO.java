@@ -32,43 +32,14 @@ public class DragonDAO {
                 .fetchOne();
         return record != null ? dragonMapper.fromRecord(record) : null;
     }
-
-
     public Dragon updateById(Dragon dragon) {
-        System.out.println("DragonDAO.updateById called for dragon ID: " + dragon.getId());
-
-        try {
-
-            var record = dragonMapper.toRecord(dragon);
-            record.setId(dragon.getId());
-            System.out.println("Mapped record - Name: " + record.getName() +
-                    ", CoordinatesId: " + record.getCoordinatesId() +
-                    ", HeadId: " + record.getHeadId());
-
-            var updatedRecord = dsl.update(Tables.DRAGON)
-                    .set(record)
-                    .where(Tables.DRAGON.ID.eq(dragon.getId()))
-                    .returning()
-                    .fetchOne();
-
-            System.out.println("Update executed, returned record: " + (updatedRecord != null ? updatedRecord.getId() : "null"));
-
-            return updatedRecord != null ? dragonMapper.fromRecord(updatedRecord) : null;
-
-        } catch (Exception e) {
-            System.out.println("Exception in DragonDAO.updateById: " + e.getMessage());
-            e.printStackTrace();
-            return null;
-        }
+        var record = dsl.update(Tables.DRAGON)
+                .set(dragonMapper.toRecord(dragon))
+                .where(Tables.DRAGON.ID.eq(dragon.getId()))
+                .returning()
+                .fetchOne();
+        return record != null ? dragonMapper.fromRecord(record) : null;
     }
-//    public Dragon updateById(Dragon dragon) {
-//        var record = dsl.update(Tables.DRAGON)
-//                .set(dragonMapper.toRecord(dragon))
-//                .where(Tables.DRAGON.ID.eq(dragon.getId()))
-//                .returning()
-//                .fetchOne();
-//        return record != null ? dragonMapper.fromRecord(record) : null;
-//    }
 
     public Dragon findById(Long id) {
         var record = dsl.selectFrom(Tables.DRAGON)
