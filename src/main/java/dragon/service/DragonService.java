@@ -130,15 +130,17 @@ public class DragonService {
         if (dragon == null) {
             throw new NoDragonFoundException(id);
         }
-        dragonDAO.deleteById(id);
+
+        dragonDAO.deleteDragonWithRelatedEntities(id);
     }
+
 
     @Transactional
     public void deleteOneByColor(String color) {
         try {
             Dragon.Color dragonColor = Dragon.Color.valueOf(color.toUpperCase());
-            boolean deleted = dragonDAO.deleteOneByColor(dragonColor);
-            if (!deleted) {
+            Long deletedId = dragonDAO.deleteOneByColor(dragonColor);
+            if (deletedId == null) {
                 throw new NoDragonFoundException(color);
             }
         } catch (IllegalArgumentException e) {

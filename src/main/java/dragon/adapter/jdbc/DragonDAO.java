@@ -2,6 +2,7 @@ package dragon.adapter.jdbc;
 import com.soa_service_a.jooq.Tables;
 import dragon.adapter.rest.dto.SortDTO;
 import dragon.domain.Dragon;
+import errorhandling.domain.NoDragonFoundException;
 import mapstruct.DragonMapper;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -54,12 +55,63 @@ public class DragonDAO {
                 .execute();
     }
 
-    public boolean deleteOneByColor(Dragon.Color color) {
-        int deletedCount = dsl.deleteFrom(Tables.DRAGON)
+    public void deleteDragonWithRelatedEntities(Long id) {
+        Dragon dragon = findById(id);
+        if (dragon == null) {
+            throw new NoDragonFoundException(id);
+        }
+
+        Long coordinatesId = dragon.getCoordinatesId();
+        Long headId = dragon.getHeadId();
+
+        deleteById(id);
+
+        if (coordinatesId != null) {
+            dsl.deleteFrom(Tables.COORDINATES)
+                    .where(Tables.COORDINATES.ID.eq(coordinatesId))
+                    .execute();
+        }
+
+        if (headId != null) {
+            dsl.deleteFrom(Tables.DRAGON_HEAD)
+                    .where(Tables.DRAGON_HEAD.ID.eq(headId))
+                    .execute();
+        }
+    }
+
+
+    public Long deleteOneByColor(Dragon.Color color) {
+        Dragon dragon = dsl.selectFrom(Tables.DRAGON)
                 .where(Tables.DRAGON.COLOR.eq(color.toString()))
                 .limit(1)
+                .fetchOne(record -> dragonMapper.fromRecord(record));
+
+        if (dragon == null) {
+            return null;
+        }
+
+        Long coordinatesId = dragon.getCoordinatesId();
+        Long headId = dragon.getHeadId();
+        Long dragonId = dragon.getId();
+
+        int deleted = dsl.deleteFrom(Tables.DRAGON)
+                .where(Tables.DRAGON.ID.eq(dragonId))
                 .execute();
-        return deletedCount > 0;
+
+        if (deleted > 0) {
+            if (coordinatesId != null) {
+                dsl.deleteFrom(Tables.COORDINATES)
+                        .where(Tables.COORDINATES.ID.eq(coordinatesId))
+                        .execute();
+            }
+            if (headId != null) {
+                dsl.deleteFrom(Tables.DRAGON_HEAD)
+                        .where(Tables.DRAGON_HEAD.ID.eq(headId))
+                        .execute();
+            }
+            return dragonId;
+        }
+        return null;
     }
 
     public Double getAverageAge() {
