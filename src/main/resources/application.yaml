@@ -7,9 +7,16 @@ spring:
     password: Anna2109
     driver-class-name: org.postgresql.Driver
 
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+
   liquibase:
     enabled: false
 
   main:
     web-application-type: servlet
 
+  gradle:
+    user:
+      home=C:/gradle_cache

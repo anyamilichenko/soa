@@ -12,7 +12,7 @@ version = '0.0.1-SNAPSHOT'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
@@ -21,10 +21,8 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation('org.springframework.boot:spring-boot-starter-web') {
-        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
-    }
+    implementation 'org.springframework.boot:spring-boot-starter-jooq'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation('org.springframework.boot:spring-boot-starter-security') {
         exclude group: 'org.springframework.security', module: 'spring-security-webflux'
@@ -40,34 +38,24 @@ dependencies {
     // PostgreSQL драйвер
     runtimeOnly 'org.postgresql:postgresql:42.7.3'
 
-    // JOOQ
-    implementation "org.jooq:jooq:3.19.10"
+    // JOOQ - понижаем до 3.18.7
+    implementation "org.jooq:jooq:3.18.7"
 
     // JOOQ Generator dependencies
-    jooqGenerator "org.jooq:jooq:3.20.5"
-    jooqGenerator "org.jooq:jooq-meta:3.20.5"
-    jooqGenerator "org.jooq:jooq-codegen:3.20.5"
-//    jooqGenerator "org.jooq:jooq-meta-extensions:3.20.5"
+    jooqGenerator "org.jooq:jooq:3.18.7"
+    jooqGenerator "org.jooq:jooq-meta:3.18.7"
+    jooqGenerator "org.jooq:jooq-codegen:3.18.7"
+    jooqGenerator "org.postgresql:postgresql:42.7.3"
 
-    jooqGenerator "org.postgresql:postgresql:42.7.5"
-    runtimeOnly "org.postgresql:postgresql:42.7.5"
-
-    // Annotation processors
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
-    // Runtime
     runtimeOnly 'ch.qos.logback:logback-classic:1.5.18'
 
-    // Provided
-    compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
-
-    // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
 }
 
 test {
@@ -75,12 +63,13 @@ test {
 }
 
 jooq {
-    version = '3.20.5'
+    version = '3.18.7'
     edition = nu.studer.gradle.jooq.JooqEdition.OSS
 
     configurations {
         main {
             generationTool {
+                logging = org.jooq.meta.jaxb.Logging.WARN
                 jdbc {
                     driver = 'org.postgresql.Driver'
                     url = 'jdbc:postgresql://localhost:5432/postgres'
@@ -92,6 +81,13 @@ jooq {
                     database {
                         name = 'org.jooq.meta.postgres.PostgresDatabase'
                         inputSchema = 'public'
+                        includes = 'coordinates|dragon|dragon_head'
+                    }
+                    generate {
+                        javaTimeTypes = true
+                        records = true
+                        daos = true
+                        pojos = true
                     }
                     target {
                         packageName = 'com.soa_service_a.jooq'
@@ -103,17 +99,13 @@ jooq {
     }
 }
 
-// Убедитесь, что сгенерированные источники добавляются в classpath
 sourceSets.main.java.srcDirs += 'build/generated-src/jooq/main'
 
-task checkJooqClasspath {
-    doLast {
-        println "JOOQ Generator dependencies:"
-        configurations.jooqGenerator.files.each { file ->
-            println " - ${file.name}"
-        }
-    }
-}
+
+
+//sourceSets.main.java.srcDirs += '/src/main/generated/com/soa_service_a/jooq/'
+
+
 
 // Задача для генерации jOOQ кода перед компиляцией
 compileJava.dependsOn 'generateJooq'
