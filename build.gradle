@@ -1,3 +1,122 @@
+//plugins {
+//    id 'java'
+//    id 'war'
+//    id 'org.springframework.boot' version '3.5.6'
+//    id 'io.spring.dependency-management' version '1.1.7'
+//    id 'org.openapi.generator' version '7.14.0'
+//    id 'nu.studer.jooq' version '9.0'
+//}
+//
+//group = 'com.soa_service_a'
+//version = '0.0.1-SNAPSHOT'
+//
+//java {
+//    toolchain {
+//        languageVersion = JavaLanguageVersion.of(17)
+//    }
+//}
+//
+//repositories {
+//    mavenCentral()
+//}
+//
+//configurations {
+//    // Исключаем Tomcat из всех конфигураций
+//    all {
+//        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+//    }
+//}
+//
+//dependencies {
+//    implementation 'org.springframework.boot:spring-boot-starter-jooq'
+//    implementation 'org.springframework.boot:spring-boot-starter-jetty'
+//    implementation 'org.springframework.boot:spring-boot-starter-web'
+//    implementation 'org.springframework.boot:spring-boot-starter-validation'
+//    implementation('org.springframework.boot:spring-boot-starter-security') {
+//        exclude group: 'org.springframework.security', module: 'spring-security-webflux'
+//        exclude group: 'org.springframework.security', module: 'spring-security-rsocket'
+//        exclude group: 'org.springframework.security', module: 'spring-security-messaging'
+//    }
+//    compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+//    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.13'
+//    implementation 'org.apache.commons:commons-lang3:3.18.0'
+//    implementation 'org.mapstruct:mapstruct:1.6.3'
+//    implementation 'org.slf4j:slf4j-api:2.0.17'
+//
+//    // PostgreSQL драйвер
+//    runtimeOnly 'org.postgresql:postgresql:42.7.3'
+//
+//    // JOOQ - понижаем до 3.18.7
+//    implementation "org.jooq:jooq:3.18.7"
+//
+//    // JOOQ Generator dependencies
+//    jooqGenerator "org.jooq:jooq:3.18.7"
+//    jooqGenerator "org.jooq:jooq-meta:3.18.7"
+//    jooqGenerator "org.jooq:jooq-codegen:3.18.7"
+//    jooqGenerator "org.postgresql:postgresql:42.7.3"
+//
+//    annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
+//    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+//
+//    runtimeOnly 'ch.qos.logback:logback-classic:1.5.18'
+//
+//    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+//    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
+//    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
+//    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+//}
+//
+//test {
+//    useJUnitPlatform()
+//}
+//
+//jooq {
+//    version = '3.18.7'
+//    edition = nu.studer.gradle.jooq.JooqEdition.OSS
+//
+//    configurations {
+//        main {
+//            generationTool {
+//                logging = org.jooq.meta.jaxb.Logging.WARN
+//                jdbc {
+//                    driver = 'org.postgresql.Driver'
+//                    url = 'jdbc:postgresql://localhost:5432/postgres'
+//                    user = 's367397'
+//                    password = '3sVupO36SMFSZf4R'
+//                }
+//                generator {
+//                    name = 'org.jooq.codegen.DefaultGenerator'
+//                    database {
+//                        name = 'org.jooq.meta.postgres.PostgresDatabase'
+//                        inputSchema = 'public'
+//                        includes = 'coordinates|dragon|dragon_head'
+//                    }
+//                    generate {
+//                        javaTimeTypes = true
+//                    }
+//                    target {
+//                        packageName = 'com.soa_service_a.jooq'
+//                        directory = 'build/generated-src/jooq/main'
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
+//
+//sourceSets.main.java.srcDirs += 'build/generated-src/jooq/main'
+//
+//// Задача для генерации jOOQ кода перед компиляцией
+//compileJava.dependsOn 'generateJooq'
+
+
+
+
+
+
+
+
+
 plugins {
     id 'java'
     id 'war'
@@ -20,8 +139,16 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    // Исключаем Tomcat из всех конфигураций
+    all {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+    }
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-jooq'
+    implementation 'org.springframework.boot:spring-boot-starter-jetty'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation('org.springframework.boot:spring-boot-starter-security') {
@@ -38,13 +165,13 @@ dependencies {
     // PostgreSQL драйвер
     runtimeOnly 'org.postgresql:postgresql:42.7.3'
 
-    // JOOQ - понижаем до 3.18.7
-    implementation "org.jooq:jooq:3.18.7"
+    // JOOQ - обновляем до 3.19.0
+    implementation "org.jooq:jooq:3.19.0"
 
     // JOOQ Generator dependencies
-    jooqGenerator "org.jooq:jooq:3.18.7"
-    jooqGenerator "org.jooq:jooq-meta:3.18.7"
-    jooqGenerator "org.jooq:jooq-codegen:3.18.7"
+    jooqGenerator "org.jooq:jooq:3.19.0"
+    jooqGenerator "org.jooq:jooq-meta:3.19.0"
+    jooqGenerator "org.jooq:jooq-codegen:3.19.0"
     jooqGenerator "org.postgresql:postgresql:42.7.3"
 
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
@@ -63,7 +190,7 @@ test {
 }
 
 jooq {
-    version = '3.18.7'
+    version = '3.19.0'
     edition = nu.studer.gradle.jooq.JooqEdition.OSS
 
     configurations {
@@ -72,15 +199,19 @@ jooq {
                 logging = org.jooq.meta.jaxb.Logging.WARN
                 jdbc {
                     driver = 'org.postgresql.Driver'
-                    url = 'jdbc:postgresql://localhost:5432/postgres'
-                    user = 'postgres'
-                    password = 'Anna2109'
+                    url = 'jdbc:postgresql://pg:5432/studs?currentSchema=s367397'
+                    user = 's367397'
+                    password = '3sVupO36SMFSZf4R'
+//                    driver = 'org.postgresql.Driver'
+//                    url = 'jdbc:postgresql://localhost:5432/postgres'
+//                    user = 'postgres'
+//                    password = 'Anna2109'
                 }
                 generator {
                     name = 'org.jooq.codegen.DefaultGenerator'
                     database {
                         name = 'org.jooq.meta.postgres.PostgresDatabase'
-                        inputSchema = 'public'
+                        inputSchema = 's367397'
                         includes = 'coordinates|dragon|dragon_head'
                     }
                     generate {
@@ -101,11 +232,150 @@ jooq {
 
 sourceSets.main.java.srcDirs += 'build/generated-src/jooq/main'
 
-
-
-//sourceSets.main.java.srcDirs += '/src/main/generated/com/soa_service_a/jooq/'
-
-
-
 // Задача для генерации jOOQ кода перед компиляцией
-compileJava.dependsOn 'generateJooq'
+//compileJava.dependsOn 'generateJooq'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//plugins {
+//    id 'java'
+//    id 'war'
+//    id 'org.springframework.boot' version '3.5.6'
+//    id 'io.spring.dependency-management' version '1.1.7'
+//    id 'org.openapi.generator' version '7.14.0'
+//    id 'nu.studer.jooq' version '9.0'
+//}
+//
+//group = 'com.soa_service_a'
+//version = '0.0.1-SNAPSHOT'
+//
+//java {
+//    toolchain {
+//        languageVersion = JavaLanguageVersion.of(17)
+//    }
+//}
+//
+//repositories {
+//    mavenCentral()
+//}
+//
+//configurations {
+//    // Исключаем Tomcat из всех конфигураций
+//    all {
+//        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+//    }
+//}
+//
+//dependencies {
+//    implementation 'org.springframework.boot:spring-boot-starter-jooq'
+//    implementation 'org.springframework.boot:spring-boot-starter-jetty'
+//    implementation 'org.springframework.boot:spring-boot-starter-web'
+//    implementation 'org.springframework.boot:spring-boot-starter-validation'
+//    implementation('org.springframework.boot:spring-boot-starter-security') {
+//        exclude group: 'org.springframework.security', module: 'spring-security-webflux'
+//        exclude group: 'org.springframework.security', module: 'spring-security-rsocket'
+//        exclude group: 'org.springframework.security', module: 'spring-security-messaging'
+//    }
+//    compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+//    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.13'
+//    implementation 'org.apache.commons:commons-lang3:3.18.0'
+//    implementation 'org.mapstruct:mapstruct:1.6.3'
+//    implementation 'org.slf4j:slf4j-api:2.0.17'
+//
+//    // PostgreSQL драйвер
+//    runtimeOnly 'org.postgresql:postgresql:42.7.3'
+//
+//    // JOOQ - обновляем до 3.19.0
+//    implementation "org.jooq:jooq:3.19.0"
+//
+//    // JOOQ Generator dependencies
+//    jooqGenerator "org.jooq:jooq:3.19.0"
+//    jooqGenerator "org.jooq:jooq-meta:3.19.0"
+//    jooqGenerator "org.jooq:jooq-codegen:3.19.0"
+//    jooqGenerator "org.postgresql:postgresql:42.7.3"
+//
+//    annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
+//    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+//
+//    runtimeOnly 'ch.qos.logback:logback-classic:1.5.18'
+//
+//    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+//    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
+//    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
+//    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+//}
+//
+//test {
+//    useJUnitPlatform()
+//}
+//
+//jooq {
+//    version = '3.19.0'
+//    edition = nu.studer.gradle.jooq.JooqEdition.OSS
+//
+//    configurations {
+//        main {
+//            generationTool {
+//                logging = org.jooq.meta.jaxb.Logging.WARN
+//                jdbc {
+//                    driver = 'org.postgresql.Driver'
+//                    url = 'jdbc:postgresql://pg:5432/studs'
+//                    user = 's367397'
+//                    password = '3sVupO36SMFSZf4R'
+//                }
+//                generator {
+//                    name = 'org.jooq.codegen.DefaultGenerator'
+//                    database {
+//                        name = 'org.jooq.meta.postgres.PostgresDatabase'
+//                        inputSchema = 'public'
+//                        includes = 'coordinates|dragon|dragon_head'
+//                    }
+//                    generate {
+//                        javaTimeTypes = true
+//                        records = true
+//                        daos = true
+//                        pojos = true
+//                    }
+//                    target {
+//                        packageName = 'com.soa_service_a.jooq'
+//                        directory = 'build/generated-src/jooq/main'
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
+//
+//sourceSets.main.java.srcDirs += 'build/generated-src/jooq/main'
+//
+//// Задача для генерации jOOQ кода перед компиляцией
+//compileJava.dependsOn 'generateJooq'

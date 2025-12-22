@@ -1,22 +1,50 @@
+server:
+  port: 8218
+  ssl:
+    enabled: true
+    key-store: classpath:service-a.p12
+    key-store-password: secret123
+    key-store-type: PKCS12
+    trust-store: classpath:service-a-truststore.p12
+    trust-store-password: secret123
+    trust-store-type: PKCS12
+
+  # Отключаем HTTP (Jetty)
+  jetty:
+    max-threads: 200
+    acceptors: -1
+    selectors: -1
+    accesslog:
+      enabled: false  # Отключите access log для экономии места
+    sni-host-check: false
+
+  # HTTP порт -1 отключает HTTP
+  http:
+    port: -1
+
+  servlet:
+    session:
+      persistent: false  # Не сохранять сессии на диск
+
 spring:
   application:
     name: soa_service_a
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: postgres
-    password: Anna2109
+    url: jdbc:postgresql://pg:5432/studs?currentSchema=s367397
+    username: s367397
+    password: 3sVupO36SMFSZf4R
     driver-class-name: org.postgresql.Driver
-
+#    url: jdbc:postgresql://localhost:5432/postgres
+#    username: postgres
+#    password: Anna2109
+#    driver-class-name: org.postgresql.Driver
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
-
   liquibase:
     enabled: false
-
   main:
     web-application-type: servlet
-
   gradle:
     user:
-      home=C:/gradle_cache
+      home: C:/gradle_cache

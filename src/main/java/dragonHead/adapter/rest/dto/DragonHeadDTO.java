@@ -26,7 +26,8 @@ public class DragonHeadDTO {
     @NotNull
     private Integer eyesCount;
 
-    public DragonHeadDTO() {}
+    public DragonHeadDTO() {
+    }
 
     public DragonHeadDTO(Integer eyesCount) {
         this.eyesCount = eyesCount;
