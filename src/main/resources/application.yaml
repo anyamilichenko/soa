@@ -1,7 +1,7 @@
 server:
   port: 8218
   ssl:
-    enabled: true
+    enabled: false
     key-store: classpath:service-a.p12
     key-store-password: secret123
     key-store-type: PKCS12
@@ -30,14 +30,14 @@ spring:
   application:
     name: soa_service_a
   datasource:
-    url: jdbc:postgresql://pg:5432/studs?currentSchema=s367397
-    username: s367397
-    password: 3sVupO36SMFSZf4R
-    driver-class-name: org.postgresql.Driver
-#    url: jdbc:postgresql://localhost:5432/postgres
-#    username: postgres
-#    password: Anna2109
+#    url: jdbc:postgresql://pg:5432/studs?currentSchema=s367397
+#    username: s367397
+#    password: 3sVupO36SMFSZf4R
 #    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: Anna2109
+    driver-class-name: org.postgresql.Driver
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
